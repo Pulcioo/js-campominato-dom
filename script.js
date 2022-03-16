@@ -34,23 +34,32 @@ for (let i = 1; i < celleTotali + 1; i++) {
     // inserisco numeri da 1 a 100 all'interno delle celle
     cella.innerText = i
     cella.addEventListener('click', function (event) {
+        //se il numero della cella è contenuto nell'array bombe il bg_color sarà rosso 
+        if (arrayBombe.includes(i)) {
+            cella.classList.add('bg_red')
+            alert('Hai calpestato una bomba...hai perso!')
+
+            const container = document.getElementById('container');
+            container.classList.add('display_none')
+
+            const perso = document.getElementById('perso')
+            perso.classList.remove('display_none')
+        }
+        // altrimenti il bg_color sarà blu
         cella.classList.add('bg_blue')
     })
 }
 
 // 5.Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
 for (let i = 1; i <= bombe; i++) {
-    let numeroRandom = generaNumeroRandom(1, celleTotali);
 
+    let numeroRandom = generaNumeroRandom(1, celleTotali);
     while (arrayBombe.includes(numeroRandom)) {
         numeroRandom = generaNumeroRandom(1, celleTotali);
     }
     arrayBombe.push(numeroRandom);
     console.log(arrayBombe)
 }
-
-// 6.In seguito l'utente clicca su una cella: 
-// se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba
 
 /////// FUNZIONE //////
 // creo una cella tramite funzione
