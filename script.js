@@ -1,10 +1,5 @@
 console.log("JS OK")
 /*
-L'utente indica un livello di difficoltà in base al quale viene generata una griglia di gioco quadrata,
-in cui ogni cella contiene un numero tra quelli compresi in un range:
-con difficoltà 1 => tra 1 e 100
-con difficoltà 2 => tra 1 e 81
-con difficoltà 3 => tra 1 e 49
 Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
 I numeri nella lista delle bombe non possono essere duplicati.
 In seguito l'utente clicca su una cella: se il numero è presente nella lista dei numeri generati -
@@ -21,10 +16,14 @@ Al termine della partita il software deve comunicare il punteggio, cioè il nume
 // seleziono 'griglia' tramite ID
 const griglia = document.getElementById('griglia');
 // variabili d'appoggio per definire righe e colonne
-let colonne = 10
-let righe = 10
+let colonne = 10;
+let righe = 10;
 // calcolo le celle totali
-let celleTotali = colonne * righe
+let celleTotali = colonne * righe;
+// dichiaro variabile array vuoto dove andrò ad inserire le bombe
+let arrayBombe = [];
+// dichiaro variabile numero totale bombe 
+const bombe = 16;
 
 // 4.CICLO per ogni cella della griglia
 for (let i = 1; i < celleTotali + 1; i++) {
@@ -39,10 +38,32 @@ for (let i = 1; i < celleTotali + 1; i++) {
     })
 }
 
+// 5.Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
+for (let i = 1; i <= bombe; i++) {
+    let numeroRandom = generaNumeroRandom(1, celleTotali);
+
+    while (arrayBombe.includes(numeroRandom)) {
+        numeroRandom = generaNumeroRandom(1, celleTotali);
+    }
+    arrayBombe.push(numeroRandom);
+    console.log(arrayBombe)
+}
+
+// 6.In seguito l'utente clicca su una cella: 
+// se il numero è presente nella lista dei numeri generati - abbiamo calpestato una bomba
+
 /////// FUNZIONE //////
 // creo una cella tramite funzione
 function creoCella() {
     const item = document.createElement('div');
     item.classList.add('cella');
     return item;
+}
+
+// creo funzione per generare un numero random da min a max
+function generaNumeroRandom(min, max) {
+    const range = max - min + 1;
+    const risultatoRandom = Math.floor(Math.random() * range) + min;
+    return risultatoRandom;
+
 }
