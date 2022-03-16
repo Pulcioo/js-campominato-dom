@@ -1,0 +1,39 @@
+/****** GENERICS ******/
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+  
+body {
+  font-family: sans-serif;
+}
+  
+/****** UTILITIES ******/
+  
+/****** CONTENT ******/
+h1{
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* creo una griglia di gioco  */
+#griglia{
+  width: 500px;
+  height: 500px;
+  background-color: cornflowerblue;
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cella{
+  width: calc(500px / 10);
+  height: calc(500px / 10);
+  border: 1px solid black;
+}
+
+.bg_blue{
+  background-color: blue;
+}
