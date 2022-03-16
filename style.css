@@ -15,11 +15,12 @@ body {
 /****** CONTENT ******/
 h1{
   text-align: center;
+  font-size: 50px;
   margin-top: 20px;
 }
 
-h2{
-  font-size: 150px;
+#perso{
+  font-size: 30px;
   text-align: center;
 }
 
@@ -27,7 +28,7 @@ h2{
 #griglia{
   width: 500px;
   height: 500px;
-  background-color: cornflowerblue;
+  background-color: lightgrey;
   margin: 20px auto;
   display: flex;
   flex-wrap: wrap;

@@ -20,15 +20,17 @@ let colonne = 10;
 let righe = 10;
 // calcolo le celle totali
 let celleTotali = colonne * righe;
-// dichiaro variabile array vuoto dove andrò ad inserire le bombe
+// array vuoto dove andrò ad inserire le bombe
 let arrayBombe = [];
-// dichiaro variabile numero totale bombe 
+// array dove andrò ad inserire un punto ad ogni click
+let tentativi = [];
+// numero totale bombe 
 const bombe = 16;
 
 // 4.CICLO per ogni cella della griglia
 for (let i = 1; i < celleTotali + 1; i++) {
     // creo la cella usando la funzione creata sotto
-    const cella = creoCella();
+    const cella = creo();
     // aggiungo .cella nella griglia
     griglia.appendChild(cella)
     // inserisco numeri da 1 a 100 all'interno delle celle
@@ -37,16 +39,17 @@ for (let i = 1; i < celleTotali + 1; i++) {
         //se il numero della cella è contenuto nell'array bombe il bg_color sarà rosso 
         if (arrayBombe.includes(i)) {
             cella.classList.add('bg_red')
-            alert('Hai calpestato una bomba...hai perso!')
-
+            // seleziono #container e gli aggiungo la classe display_none 
             const container = document.getElementById('container');
             container.classList.add('display_none')
-
+            // seleziono #perso e gli tolgo la classe display_none 
             const perso = document.getElementById('perso')
             perso.classList.remove('display_none')
+            perso.innerHTML += `<p>Il tuo punteggio è ${tentativi.length}<p>`
         }
         // altrimenti il bg_color sarà blu
         cella.classList.add('bg_blue')
+        tentativi.push(i++)
     })
 }
 
@@ -61,9 +64,9 @@ for (let i = 1; i <= bombe; i++) {
     console.log(arrayBombe)
 }
 
-/////// FUNZIONE //////
+/////// FUNZIONi //////
 // creo una cella tramite funzione
-function creoCella() {
+function creo() {
     const item = document.createElement('div');
     item.classList.add('cella');
     return item;
