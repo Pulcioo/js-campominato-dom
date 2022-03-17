@@ -28,26 +28,46 @@ h1{
 #griglia{
   width: 500px;
   height: 500px;
-  background-color: lightgrey;
   margin: 20px auto;
   display: flex;
   flex-wrap: wrap;
 }
 
+.blocco_griglia{
+  pointer-events: none;
+}
+
 .cella{
-  width: calc(500px / 10);
-  height: calc(500px / 10);
   border: 1px solid black;
 }
 
+.cella.click{
+  pointer-events: none;
+}
+
+.cella.facile{
+  width: calc(100% / 10);
+  height: calc(100% / 10);
+}
+
+.cella.media{
+  width: calc(100% / 9);
+  height: calc(100% / 9);
+}
+
+.cella.difficile{
+  width: calc(100% / 7);
+  height: calc(100% / 7);
+}
+
 .bg_blue{
-  background-color: blue;
+  background-color: rgb(87, 87, 228);
 }
 
 .bg_red{
   background-color: red;
 }
 
-.display_none{
-  display: none;
+.center{
+  text-align: center;
 }

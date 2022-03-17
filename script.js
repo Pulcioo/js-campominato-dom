@@ -9,68 +9,138 @@ La partita termina quando il giocatore clicca su una bomba o raggiunge il numero
 Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha cliccato su una cella che non era una bomba.
 */
 
-/////// 1.Creo una griglia di gioco su CSS
-/////// 2.Aggiungo il div con #griglia nel documento HTML
-/////// 3.Imposto la griglia su 10 righe e 10 colonne in JS
-
-// seleziono 'griglia' tramite ID
-const griglia = document.getElementById('griglia');
-// variabili d'appoggio per definire righe e colonne
-let colonne = 10;
-let righe = 10;
-// calcolo le celle totali
-let celleTotali = colonne * righe;
 // array vuoto dove andrò ad inserire le bombe
 let arrayBombe = [];
-// array dove andrò ad inserire un punto ad ogni click
-let tentativi = [];
+// variabile punteggio
+let punteggio = 0;
 // numero totale bombe 
 const bombe = 16;
 
-// 4.CICLO per ogni cella della griglia
-for (let i = 1; i < celleTotali + 1; i++) {
-    // creo la cella usando la funzione creata sotto
-    const cella = creo();
-    // aggiungo .cella nella griglia
-    griglia.appendChild(cella)
-    // inserisco numeri da 1 a 100 all'interno delle celle
-    cella.innerText = i
-    cella.addEventListener('click', function (event) {
-        //se il numero della cella è contenuto nell'array bombe il bg_color sarà rosso 
-        if (arrayBombe.includes(i)) {
-            cella.classList.add('bg_red')
-            // seleziono #container e gli aggiungo la classe display_none 
-            const container = document.getElementById('container');
-            container.classList.add('display_none')
-            // seleziono #perso e gli tolgo la classe display_none 
-            const perso = document.getElementById('perso')
-            perso.classList.remove('display_none')
-            perso.innerHTML += `<p>Il tuo punteggio è ${tentativi.length}<p>`
-        }
-        // altrimenti il bg_color sarà blu
-        cella.classList.add('bg_blue')
-        tentativi.push(i++)
-    })
+
+
+// recupero bottoni ed aggiungo eventi al click a seconda della difficoltà
+const bottoneFacile = document.getElementById('facile');
+const bottoneMedia = document.getElementById('media');
+const bottoneDifficile = document.getElementById('difficile');
+
+
+bottoneFacile.addEventListener('click', () => iniziaGioco(100, 'facile'));
+bottoneMedia.addEventListener('click', () => iniziaGioco(81, 'media'));
+bottoneDifficile.addEventListener('click', () => iniziaGioco(17, 'difficile'));
+
+
+
+function iniziaGioco(celleTotali, classiDifficoltà) {
+
+    generaBombe(celleTotali);
+
+    creaElementiInGriglia(celleTotali, classiDifficoltà);
+
+    aggiungiClickCelle(celleTotali);
+
 }
 
-// 5.Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
-for (let i = 1; i <= bombe; i++) {
 
-    let numeroRandom = generaNumeroRandom(1, celleTotali);
-    while (arrayBombe.includes(numeroRandom)) {
-        numeroRandom = generaNumeroRandom(1, celleTotali);
+
+function aggiungiClickCelle(celleTotali) {
+
+    // aggiungo evento al click
+    for (let i = 1; i <= celleTotali; i++) {
+        const cella = document.getElementById('cella-' + i);
+        cella.addEventListener('click', () => {
+            const fineGioco = controlloClick(cella, i)
+
+            if (fineGioco) {
+                bloccoCelle()
+                console.log(punteggio);
+                alert('Bravo! Il tuo punteggio è di ' + punteggio)
+
+            } else {
+                punteggio++;
+                console.log(punteggio);
+                cella.classList.add('click');
+                const celleNonBombe = celleTotali - bombe
+                if (punteggio >= celleNonBombe) {
+                    bloccoCelle();
+                    alert('Bravo! Il tuo punteggio è di ' + punteggio)
+                }
+            }
+        })
+
     }
-    arrayBombe.push(numeroRandom);
-    console.log(arrayBombe)
 }
 
-/////// FUNZIONi //////
+
+// blocco le celle in caso di fine gioco
+function bloccoCelle() {
+    const griglia = document.getElementById('griglia');
+    griglia.classList.add('blocco_griglia')
+}
+
+
+
+function controlloClick(cella, i) {
+    // se il numero i è contenuto nell'array bombe allora bg_red
+    // altrimenti gb_blue
+    const èBomba = arrayBombe.includes(i) === true
+
+    if (èBomba) {
+        cella.classList.add('bg_red')
+    } else {
+        cella.classList.add('bg_blue')
+    }
+
+    return èBomba;
+}
+
+
+
+function creaElementiInGriglia(celleTotali, classiDifficoltà) {
+
+    // seleziono 'griglia' tramite ID
+    const griglia = document.getElementById('griglia');
+
+    // resetto il contenuto della griglia 
+    griglia.innerHTML = '';
+
+    // CICLO per ogni cella della griglia
+    for (let i = 1; i < celleTotali + 1; i++) {
+        // creo la cella usando la funzione creata sotto
+        const cella = creo();
+        cella.id = 'cella-' + i;
+        cella.classList.add(classiDifficoltà)
+        // aggiungo .cella nella griglia
+        griglia.appendChild(cella)
+        // inserisco numeri da 1 a 100 all'interno delle celle
+        cella.innerText = i
+    }
+
+}
+
+
 // creo una cella tramite funzione
 function creo() {
     const item = document.createElement('div');
     item.classList.add('cella');
     return item;
 }
+
+
+
+// Il computer deve generare 16 numeri casuali nello stesso range della difficoltà prescelta: le bombe.
+function generaBombe(celleTotali) {
+
+    for (let i = 1; i <= bombe; i++) {
+        let numeroRandom = generaNumeroRandom(1, celleTotali);
+        while (arrayBombe.includes(numeroRandom)) {
+            numeroRandom = generaNumeroRandom(1, celleTotali);
+        }
+        arrayBombe.push(numeroRandom);
+        console.log(arrayBombe)
+    }
+}
+
+
 
 // creo funzione per generare un numero random da min a max
 function generaNumeroRandom(min, max) {
